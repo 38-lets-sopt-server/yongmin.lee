@@ -1,4 +1,7 @@
-package org.sopt;
+package org.sopt.service;
+
+import org.sopt.Post;
+import org.sopt.dto.response.CreatePostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,22 +12,20 @@ public class PostService {
 
     // CREATE ✅ 같이 구현
     // 글쓰기 화면에서 "완료" 버튼을 누르면 이 메서드가 호출돼요
-    public void createPost(String title, String content, String author) {
-        try {
-            // 글쓰기 화면설계서: 제목은 필수, 최대 50자
-            if (title == null || title.isBlank()) {
-                throw new IllegalArgumentException("제목은 필수입니다!");
-            }
-            if (content == null || content.isBlank()) {
-                throw new IllegalArgumentException("내용은 필수입니다!");
-            }
-            String createdAt = java.time.LocalDateTime.now().toString();
-            Post post = new Post(nextId++, title, content, author, createdAt);
-            postList.add(post);
-            System.out.println("✅ 게시글 등록 완료!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("🚫 입력 오류: " + e.getMessage());
+    public CreatePostResponse createPost(String title, String content, String author) {
+
+        // 글쓰기 화면설계서: 제목은 필수, 최대 50자
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("제목은 필수입니다!");
         }
+        if (content == null || content.isBlank()) {
+            throw new IllegalArgumentException("내용은 필수입니다!");
+        }
+        String createdAt = java.time.LocalDateTime.now().toString();
+        Post post = new Post(nextId++, title, content, author, createdAt);
+        postList.add(post);
+        System.out.println("✅ 게시글 등록 완료!");
+        return new CreatePostResponse(post.getId(), "✅ 게시글 등록 완료!");
     }
 
     // READ - 전체 📝 과제
