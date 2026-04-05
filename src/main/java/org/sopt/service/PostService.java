@@ -2,8 +2,10 @@ package org.sopt.service;
 
 import org.sopt.Post;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.PostResponse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PostService {
@@ -30,29 +32,75 @@ public class PostService {
 
     // READ - 전체 📝 과제
     // 자유게시판 목록 화면에서 호출돼요
-    public void readAllPosts() {
-        // TODO: postList가 비어있으면 "등록된 게시글이 없습니다." 출력
+    public List<PostResponse> getAllPosts() {
+        // TODO: postList가 비어있으면 "등록된 게시글이 없습니다." 출력 <- Main에서 함
         // TODO: 비어있지 않으면 모든 게시글의 getInfo()를 순서대로 출력
+        List<PostResponse> responseList = new ArrayList<>();
+
+        for(Post post: postList){
+            PostResponse postResponse = new PostResponse(post);
+            responseList.add(postResponse);
+        }
+
+        return responseList;
+
     }
 
     // READ - 단건 📝 과제
     // 목록에서 특정 게시글을 탭하면 호출돼요 (게시글 상세 화면)
-    public void readPost(Long id) {
+    public PostResponse getPost(Long id) {
         // TODO: postList에서 id가 일치하는 게시글을 찾아 getInfo() 출력
+
+        for(Post post: postList){
+            if(post.getId().equals(id)){
+                System.out.println(post.getInfo());
+                return new PostResponse(post);
+            }
+        }
         // TODO: 없으면 "해당 게시글을 찾을 수 없습니다." 출력
+        throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
     }
 
     // UPDATE 📝 과제
     // 게시글 수정 화면에서 "완료"를 누르면 호출돼요
     public void updatePost(Long id, String newTitle, String newContent) {
         // TODO: postList에서 id가 일치하는 게시글을 찾아 update() 호출
+        if(newTitle == null || newTitle.isBlank()){
+            throw new IllegalArgumentException("제목은 필수입니다.");
+        }
+
+        if(newContent == null || newContent.isBlank()){
+            throw new IllegalArgumentException("내용은 필수입니다.");
+        }
+
+        for(Post post: postList){
+            if(post.getId().equals(id)){
+                post.update(newTitle, newContent);
+                return;
+            }
+        }
         // TODO: 없으면 "해당 게시글을 찾을 수 없습니다." 출력
+        throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
     }
 
     // DELETE 📝 과제
     // 게시글 상세에서 삭제를 누르면 호출돼요
     public void deletePost(Long id) {
+
         // TODO: postList에서 id가 일치하는 게시글을 제거
+        Iterator<Post> iterator = postList.iterator();
+
+        while(iterator.hasNext()){
+            Post post = iterator.next();
+
+            if(post.getId().equals(id)){
+                iterator.remove();
+                System.out.println("삭제 완료!");
+                return;
+            }
+        }
+
         // TODO: 성공하면 "삭제 완료!", 없으면 "해당 게시글을 찾을 수 없습니다." 출력
+        throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
     }
 }
