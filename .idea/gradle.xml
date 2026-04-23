@@ -8,7 +8,7 @@
         <option name="gradleJvm" value="temurin-17" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../../../../../../../광운대/3학년/외부활동/동아리/sopt/hw1/assignment/yongmin.lee" />
+            <option value="$PROJECT_DIR$/../../../../../../광운대/3학년/동아리/sopt/hw1/assignment" />
           </set>
         </option>
       </GradleProjectSettings>
