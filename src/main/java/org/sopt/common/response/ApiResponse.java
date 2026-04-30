@@ -9,12 +9,13 @@ public record ApiResponse<T>(
         T data
 ) {
     // 성공
-    public static <T> ApiResponse<T> success(String code, String message, T data){
+    public static <T> ApiResponse<T> success(SuccessCode successCode, T data){
         return new ApiResponse<>(
                 true,
-                code,
-                message,
-                data);
+                successCode.getCode(),
+                successCode.getMessage(),
+                data
+        );
     }
 
     // 실패

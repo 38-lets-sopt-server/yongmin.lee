@@ -3,6 +3,7 @@ package org.sopt.service;
 import org.sopt.common.exception.ErrorCode;
 import org.sopt.common.exception.customError.InvalidInputException;
 import org.sopt.common.exception.customError.PostNotFoundException;
+import org.sopt.common.exception.customError.UserNotFoundException;
 import org.sopt.domain.Post;
 import org.sopt.domain.User;
 import org.sopt.dto.post.request.CreatePostRequest;
@@ -35,7 +36,8 @@ public class PostService {
     public CreatePostResponse createPost(CreatePostRequest request) {
 
         User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException(request.userId()));
+
         // 글쓰기 화면설계서: 제목은 필수, 최대 50자
         if (request.title() == null || request.title().isBlank()) {
             throw new InvalidInputException(ErrorCode.INVALID_TITLE);
@@ -93,7 +95,10 @@ public class PostService {
     // DELETE
     @Transactional
     public void deletePost(Long id) {
-        postRepository.deleteById(id);
+        Post post = postRepository.findById(id)
+                        .orElseThrow(() -> new PostNotFoundException(id));
+
+        postRepository.delete(post);
 
 
     }

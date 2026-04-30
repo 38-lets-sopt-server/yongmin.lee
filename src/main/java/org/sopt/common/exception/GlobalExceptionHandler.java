@@ -2,6 +2,7 @@ package org.sopt.common.exception;
 
 import org.sopt.common.exception.customError.InvalidInputException;
 import org.sopt.common.exception.customError.PostNotFoundException;
+import org.sopt.common.exception.customError.UserNotFoundException;
 import org.sopt.common.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handlePostNotFound(PostNotFoundException e){
         return ResponseEntity
                 .status(ErrorCode.POST_NOT_FOUND.getStatus())
+                .body(ApiResponse.error(e.getErrorCode()));
+    }
+
+    // UserNotFoundException -> 404
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException e){
+        return ResponseEntity
+                .status(ErrorCode.USER_NOT_FOUND.getStatus())
                 .body(ApiResponse.error(e.getErrorCode()));
     }
 

@@ -1,6 +1,7 @@
 package org.sopt.controller;
 
 import org.sopt.common.response.ApiResponse;
+import org.sopt.common.response.SuccessCode;
 import org.sopt.dto.post.request.CreatePostRequest;
 import org.sopt.dto.post.request.UpdatePostRequest;
 import org.sopt.dto.post.response.CreatePostResponse;
@@ -28,8 +29,8 @@ public class PostController {
     ){
         CreatePostResponse response = postService.createPost(request);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("SUCCESS", "게시글 생성 성공", response));
+                .status(SuccessCode.POST_CREATE_SUCCESS.getStatus())
+                .body(ApiResponse.success(SuccessCode.POST_CREATE_SUCCESS, response));
     }
 
     // GET /posts (전체 조회)
@@ -38,8 +39,8 @@ public class PostController {
         //TODO
         List<PostResponse> response = postService.getAllPosts();
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ApiResponse.success("SUCCESS", "게시글 목록 조회 성공", response));
+                .status(SuccessCode.POST_LIST_SUCCESS.getStatus())
+                .body(ApiResponse.success(SuccessCode.POST_LIST_SUCCESS, response));
     }
 
     // GET /posts/{id} (개별 조회)
@@ -50,8 +51,8 @@ public class PostController {
         //TODO
         PostResponse response = postService.getPost(id);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ApiResponse.success("SUCCESS", "게시글 조회 성공", response));
+                .status(SuccessCode.POST_GET_SUCCESS.getStatus())
+                .body(ApiResponse.success(SuccessCode.POST_GET_SUCCESS, response));
     }
 
     // PUT /posts/{id} (글 수정)
@@ -63,8 +64,8 @@ public class PostController {
         //TODO
         postService.updatePost(id, request);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ApiResponse.success("SUCCESS", "게시글 수정을 성공하였습니다.", null));
+                .status(SuccessCode.POST_UPDATE_SUCCESS.getStatus())
+                .body(ApiResponse.success(SuccessCode.POST_UPDATE_SUCCESS, null));
     }
 
     // DELETE /posts/{id} (글 삭제)
@@ -75,8 +76,8 @@ public class PostController {
         //TODO
         postService.deletePost(id);
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ApiResponse.success("SUCCESS", "게시글 삭제를 성공히였습니다.", null));
+                .status(SuccessCode.POST_DELETE_SUCCESS.getStatus())
+                .body(ApiResponse.success(SuccessCode.POST_DELETE_SUCCESS, null));
     }
 
 }

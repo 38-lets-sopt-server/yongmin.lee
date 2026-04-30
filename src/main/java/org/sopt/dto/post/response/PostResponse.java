@@ -12,7 +12,8 @@ public record PostResponse (
         Long id,
         String title,
         String content,
-        User user,
+        Long userId,
+        String nickname,
         LocalDateTime createdAt
 
 ){
@@ -23,7 +24,8 @@ public record PostResponse (
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getUser(),
+                post.getUser().getId(),
+                post.getUser().getNickname(),
                 post.getCreatedAt()
         );
     }
