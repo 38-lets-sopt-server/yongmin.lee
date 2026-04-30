@@ -4,11 +4,13 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
     POST_NOT_FOUND("POST_001", "게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-    INVALID_TITLE("POST 002", "제목은 필수입니다.", HttpStatus.BAD_REQUEST),
+    INVALID_TITLE("POST_002", "제목은 필수입니다.", HttpStatus.BAD_REQUEST),
     INVALID_CONTENT("POST_003", "내용은 필수입니다.", HttpStatus.BAD_REQUEST),
-    INTERNAL_SERVER_ERROR("COMMON_001", "서버 내부 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_INPUT("COMMON_002", "잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
 
+    INTERNAL_SERVER_ERROR("COMMON_001", "서버 내부 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_INPUT("COMMON_002", "잘못된 요청입니다.", HttpStatus.BAD_REQUEST),
+
+    USER_NOT_FOUND("USER_001", "유저가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
 
     private final String code;
     private final String message;
