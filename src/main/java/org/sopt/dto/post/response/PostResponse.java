@@ -1,7 +1,9 @@
 package org.sopt.dto.post.response;
 
 import org.sopt.domain.Post;
+import org.sopt.domain.User;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 // 게시글 조회 응답 (서버 → 클라이언트)
@@ -10,8 +12,8 @@ public record PostResponse (
         Long id,
         String title,
         String content,
-        String author,
-        String createdAt
+        User user,
+        LocalDateTime createdAt
 
 ){
 
@@ -21,8 +23,8 @@ public record PostResponse (
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getAuthor(),
-                post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                post.getUser(),
+                post.getCreatedAt()
         );
     }
 }
