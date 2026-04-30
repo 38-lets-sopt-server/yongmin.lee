@@ -45,8 +45,7 @@ public class PostService {
         if (request.content() == null || request.content().isBlank()) {
             throw new InvalidInputException(ErrorCode.INVALID_CONTENT);
         }
-        LocalDateTime createdAt = LocalDateTime.now();
-        Post post = new Post(request.title(), request.content(), user, createdAt);
+        Post post = new Post(request.title(), request.content(), user);
         postRepository.save(post);
 
         return new CreatePostResponse(post.getId(), "✅ 게시글 등록 완료!");
