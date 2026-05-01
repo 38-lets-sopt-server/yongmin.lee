@@ -29,7 +29,7 @@ ERD란 데이터베이스의 구조를 시각적으로 표현한 설계도로,
 
 
 # 구현한 내용에 대해 ERD 구조도를 ERD Cloud에 그려서 올려주세요.
-![img.png](img.png)
+![img.png](imgs/erd.png)
 
 # QueryDSL이란 무엇이고, JPQL과 어떤 차이가 있나요?
 ## QueryDSL

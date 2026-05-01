@@ -10,6 +10,7 @@ import org.sopt.common.response.SuccessCode;
 import org.sopt.dto.post.request.CreatePostRequest;
 import org.sopt.dto.post.request.UpdatePostRequest;
 import org.sopt.dto.post.response.CreatePostResponse;
+import org.sopt.dto.post.response.PostListResponse;
 import org.sopt.dto.post.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -54,9 +55,8 @@ public class PostController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping
-    public ResponseEntity<BaseResponse<List<PostResponse>>> getAllPosts(){
-        //TODO
-        List<PostResponse> response = postService.getAllPosts();
+    public ResponseEntity<BaseResponse<List<PostListResponse>>> getAllPosts(){
+        List<PostListResponse> response = postService.getAllPosts();
         return ResponseEntity
                 .status(SuccessCode.POST_LIST_SUCCESS.getStatus())
                 .body(BaseResponse.success(SuccessCode.POST_LIST_SUCCESS, response));

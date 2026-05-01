@@ -8,7 +8,10 @@ public enum SuccessCode
     POST_GET_SUCCESS("POST_200", "게시글 조회 성공", HttpStatus.OK),
     POST_LIST_SUCCESS("POST_200", "게시글 목록 조회 성공", HttpStatus.OK),
     POST_UPDATE_SUCCESS("POST_200", "게시글 수정 성공", HttpStatus.OK),
-    POST_DELETE_SUCCESS("POST_200", "게시글 삭제 성공", HttpStatus.OK);
+    POST_DELETE_SUCCESS("POST_200", "게시글 삭제 성공", HttpStatus.OK),
+
+    LIKE_CREATE_SUCCESS("LIKE_200", "좋아요 성공", HttpStatus.OK),
+    LIKE_DELETE_SUCCESS("LIKE_200", "좋아요 취소 성공", HttpStatus.OK);
 
     private final String code;
     private final String message;
