@@ -12,18 +12,22 @@ public record PostResponse (
         Long id,
         String title,
         String content,
-        User user,
+        Long userId,
+        String nickname,
+        Long likeCount,
         LocalDateTime createdAt
 
 ){
 
     // Post 객체를 PostResponse로 변환하는 정적 팩토리 메서드
-    public static PostResponse from(Post post){
+    public static PostResponse from(Post post, Long likeCount){
         return new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getUser(),
+                post.getUser().getId(),
+                post.getUser().getNickname(),
+                likeCount,
                 post.getCreatedAt()
         );
     }
