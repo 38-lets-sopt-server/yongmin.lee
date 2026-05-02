@@ -13,4 +13,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     // 좋아요 취소
     void deleteByUserIdAndPostId(Long userId, Long postId);
+
+    // 좋아요 삭제
+    void deleteByPostId(Long postId);
 }

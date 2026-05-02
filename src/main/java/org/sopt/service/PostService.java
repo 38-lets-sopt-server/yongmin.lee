@@ -101,6 +101,8 @@ public class PostService {
         Post post = postRepository.findById(id)
                         .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
+        // 좋아요 모두 제거
+        likeRepository.deleteByPostId(id);
         postRepository.delete(post);
 
 
