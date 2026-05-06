@@ -2,6 +2,7 @@ spring:
   application:
     name: assignment
 
+
   datasource:
     url: jdbc:mysql://localhost:3306/assignment
     username: sopt
