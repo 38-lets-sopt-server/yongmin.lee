@@ -14,6 +14,7 @@ import org.sopt.dto.post.response.PostListResponse;
 import org.sopt.dto.post.response.PostResponse;
 import org.sopt.service.PostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,9 +38,11 @@ public class PostController {
     })
     @PostMapping
     public ResponseEntity<BaseResponse<CreatePostResponse>> createPost(
-            @RequestBody CreatePostRequest request
+            @RequestBody CreatePostRequest request,
+            @AuthenticationPrincipal Long userId
     ){
-        CreatePostResponse response = postService.createPost(request);
+        CreatePostResponse response = postService.createPost(request, userId);
+
         return ResponseEntity
                 .status(SuccessCode.POST_CREATE_SUCCESS.getStatus())
                 .body(BaseResponse.success(SuccessCode.POST_CREATE_SUCCESS, response));
@@ -97,9 +100,10 @@ public class PostController {
     public ResponseEntity<BaseResponse<Void>> updatePost(
             @Parameter(description = "수정할 게시글 ID", example = "1", required = true)
             @PathVariable("id") Long id,
-            @RequestBody UpdatePostRequest request
+            @RequestBody UpdatePostRequest request,
+            @AuthenticationPrincipal Long userId
             ){
-        postService.updatePost(id, request);
+        postService.updatePost(id, request, userId);
         return ResponseEntity
                 .status(SuccessCode.POST_UPDATE_SUCCESS.getStatus())
                 .body(BaseResponse.success(SuccessCode.POST_UPDATE_SUCCESS, null));
@@ -118,9 +122,10 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<BaseResponse<Void>> deletePost(
             @Parameter(description = "삭제할 게시글 ID", example = "1", required = true)
-            @PathVariable("id") Long id
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal Long userId
     ){
-        postService.deletePost(id);
+        postService.deletePost(id, userId);
         return ResponseEntity
                 .status(SuccessCode.POST_DELETE_SUCCESS.getStatus())
                 .body(BaseResponse.success(SuccessCode.POST_DELETE_SUCCESS, null));

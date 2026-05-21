@@ -34,18 +34,20 @@ public class PostService {
 
     // CREATE
     @Transactional
-    public CreatePostResponse createPost(CreatePostRequest request) {
+    public CreatePostResponse createPost(CreatePostRequest request, Long userId) {
 
-        User user = userRepository.findById(request.userId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
         // 글쓰기 화면설계서: 제목은 필수, 최대 50자
         if (request.title() == null || request.title().isBlank()) {
             throw new BusinessException(ErrorCode.INVALID_TITLE);
         }
+
         if (request.content() == null || request.content().isBlank()) {
             throw new BusinessException(ErrorCode.INVALID_CONTENT);
         }
+
         Post post = new Post(request.title(), request.content(), user);
         postRepository.save(post);
 
@@ -79,7 +81,8 @@ public class PostService {
 
     // UPDATE
     @Transactional
-    public void updatePost(Long id, UpdatePostRequest request) {
+    public void updatePost(Long id, UpdatePostRequest request, Long userId) {
+
         if(request.title() == null || request.title().isBlank()){
             throw new BusinessException(ErrorCode.INVALID_TITLE);
         }
@@ -91,20 +94,35 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 
+        // 게시글 작성자와 현재 로그인한 유저가 같은지 확인
+        validatePostOwner(post, userId);
+
         post.update(request.title(), request.content());
 
     }
 
+
+
     // DELETE
     @Transactional
-    public void deletePost(Long id) {
+    public void deletePost(Long id, Long userId) {
         Post post = postRepository.findById(id)
                         .orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+
+        // 게시글 작성자와 현재 로그인한 유저가 같은지 확인
+        validatePostOwner(post, userId);
 
         // 좋아요 모두 제거
         likeRepository.deleteByPostId(id);
         postRepository.delete(post);
 
 
+    }
+
+    // 게시글 작성자와 현재 로그인한 유저가 같은지 확인
+    private void validatePostOwner(Post post, Long userId) {
+        if (!post.getUser().getId().equals(userId)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN);
+        }
     }
 }
