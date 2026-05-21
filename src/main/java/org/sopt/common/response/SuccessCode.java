@@ -11,7 +11,12 @@ public enum SuccessCode
     POST_DELETE_SUCCESS("POST_200", "게시글 삭제 성공", HttpStatus.OK),
 
     LIKE_CREATE_SUCCESS("LIKE_200", "좋아요 성공", HttpStatus.OK),
-    LIKE_DELETE_SUCCESS("LIKE_200", "좋아요 취소 성공", HttpStatus.OK);
+    LIKE_DELETE_SUCCESS("LIKE_200", "좋아요 취소 성공", HttpStatus.OK),
+
+    SIGNUP_SUCCESS("AUTH_201", "회원가입 성공", HttpStatus.CREATED),
+    LOGIN_SUCCESS("AUTH_200", "로그인 성공", HttpStatus.OK),
+    TOKEN_REISSUE_SUCCESS("AUTH_200", "토큰 재발급 성공", HttpStatus.OK),
+    LOGOUT_SUCCESS("AUTH_200", "로그아웃 성공", HttpStatus.OK);
 
     private final String code;
     private final String message;

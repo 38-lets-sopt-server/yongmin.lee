@@ -6,7 +6,6 @@ import org.sopt.domain.User;
 public record CreatePostRequest
         (
           String title,
-          String content,
-          Long userId
+          String content
         ){
 }

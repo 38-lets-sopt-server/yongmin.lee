@@ -9,6 +9,7 @@ import org.sopt.common.response.BaseResponse;
 import org.sopt.common.response.SuccessCode;
 import org.sopt.service.LikeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Like", description = "게시글 좋아요 관련 API")
@@ -35,7 +36,7 @@ public class LikeController {
             @Parameter(description = "좋아요를 누를 게시글 ID", example = "1", required = true)
             @PathVariable("postId") Long postId,
             @Parameter(description = "좋아요를 누르는 유저 ID", example = "1", required = true)
-            @RequestParam("userId") Long userId
+            @AuthenticationPrincipal Long userId
     ) {
         likeService.likePost(postId, userId);
         return ResponseEntity
@@ -55,7 +56,7 @@ public class LikeController {
             @Parameter(description = "좋아요를 취소할 게시글 ID", example = "1", required = true)
             @PathVariable("postId") Long postId,
             @Parameter(description = "좋아요를 취소하는 유저 ID", example = "1", required = true)
-            @RequestParam("userId") Long userId
+            @AuthenticationPrincipal Long userId
     ) {
         likeService.unlikePost(postId, userId);
         return ResponseEntity
