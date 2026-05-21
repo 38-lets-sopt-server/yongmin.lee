@@ -23,3 +23,9 @@ security:
     secret: seopsopt-fighting
     access-token-expires-in-seconds: 1800     # 30분
     refresh-token-expires-in-seconds: 1209600 # 2주
+
+oauth:
+  kakao:
+    rest-api-key: ${KAKAO_REST_API_KEY}
+    client-secret: ${KAKAO_CLIENT_SECRET:}
+    redirect-uri: http://localhost:8080/api/v1/oauth2/kakao/callback

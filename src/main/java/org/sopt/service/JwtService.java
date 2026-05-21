@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Service
@@ -63,6 +65,16 @@ public class JwtService {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("JWT의 회원 정보가 올바르지 않습니다.");
         }
+    }
+
+    // Access Token의 만료 시각 추출(블랙리스트 저장용)
+    public LocalDateTime getExpiration(String token){
+        DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
+
+        return LocalDateTime.ofInstant(
+                jwt.getExpiresAt().toInstant(),
+                ZoneId.systemDefault()
+        );
     }
 
     // RefreshToken 생성 시 만료 시간 반환

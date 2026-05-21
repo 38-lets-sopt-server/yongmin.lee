@@ -34,8 +34,14 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         // 로그인과 토큰 재발급 API는 인증 없이 접근 가능
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/reissue").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/oauth2/kakao").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/oauth2/kakao/callback").permitAll()
+
+                        // 로그아웃 API는 Access Token이 있는 사용자만 접근 가능
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").authenticated()
 
                         // 게시글 조회 API는 누구나 접근 가능
                         .requestMatchers(HttpMethod.GET, "/api/v1/posts").permitAll()

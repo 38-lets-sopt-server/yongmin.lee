@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.sopt.auth.BlacklistTokenStore;
 import org.sopt.common.exception.ErrorCode;
 import org.sopt.common.response.BaseResponse;
 import org.sopt.domain.User;
@@ -26,14 +27,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
     private final ObjectMapper objectMapper;
+    private final BlacklistTokenStore blacklistTokenStore;
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository, ObjectMapper objectMapper) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository, ObjectMapper objectMapper, BlacklistTokenStore blacklistTokenStore) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
+        this.blacklistTokenStore = blacklistTokenStore;
     }
 
     @Override
@@ -54,6 +57,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         String accessToken = authorizationHeader.substring(BEARER_PREFIX.length());
 
         try {
+            // 로그아웃 처리된 Access Token이면 인증을 중단
+            if (blacklistTokenStore.exists(accessToken)){
+                throw new IllegalArgumentException("로그아웃된 토큰입니다.");
+            }
+
             // access token 검증 및 userId 추출
             Long userId = jwtService.verifyAndGetUserId(accessToken);
 
@@ -79,7 +87,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            // 토큰이 유효하지 않으면 인증 정보를 비우고 401 응답을 반환한다.
+            // 토큰이 유효하지 않으면 인증 정보를 비우고 401 응답을 반환
             SecurityContextHolder.clearContext();
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
